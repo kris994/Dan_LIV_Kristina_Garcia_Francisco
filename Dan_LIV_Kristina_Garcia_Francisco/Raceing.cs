@@ -7,7 +7,6 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
     {
         public static readonly CountdownEvent ready = new CountdownEvent(1);
         private static readonly Random rng = new Random();
-        private readonly object tankVolumeAmount = new object();
         private static string semaphoreColor = "";
         private readonly string[] colorOptions = { "Green", "Red" };
 
@@ -19,33 +18,27 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         {
             ready.Signal();
             auto.Move(auto);
-            OngoingRace(10, auto);
+            Thread.Sleep(10);
 
             if (semaphoreColor == "Red")
             {
                 Console.WriteLine(auto.Color + " " + auto.Producer + " waiting on red light.");
-                OngoingRace(2, auto);
             }
 
-            OngoingRace(3, auto);
-
-
+            Thread.Sleep(3);
         }
 
         /// <summary>
-        /// Time spent in race
+        /// Tank Volume decreasing every one second
         /// </summary>
-        /// <param name="time">The time spent</param>
-        /// <param name="auto">The car that is spenign time</param>
-        public void OngoingRace(int time, Automobile auto)
+        public void TankDecrease()
         {
-            for (int i = 0; i < time+1; i++)
+            while(true)
             {
-                // Thread safe decreasing the tank volume
-                lock (tankVolumeAmount)
+                for (int i = 0; i< Program.allAutomobiles.Count; i++)
                 {
-                    auto.TankVolume = auto.TankVolume - rng.Next(2, 5);
-                    Console.WriteLine(auto.TankVolume);
+                    Program.allAutomobiles[i].TankVolume = Program.allAutomobiles[i].TankVolume - rng.Next(2, 5);
+                    Console.WriteLine(Program.allAutomobiles[i].TankVolume);
                 }
                 Thread.Sleep(1000);
             }

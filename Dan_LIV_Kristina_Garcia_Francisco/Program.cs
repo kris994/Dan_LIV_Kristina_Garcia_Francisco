@@ -64,10 +64,15 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             Thread thread2 = new Thread(() => race.CarRaceProcess(golf));
             thread2.Start();
 
-            // Thread that changes the semaphore color
+            // Thread that changes the semaphore color every 2 seconds
             Thread thread3 = new Thread(race.ChangeSemaphoreColor);
             thread3.IsBackground = true;
             thread3.Start();
+
+            // Thread that reduces the Tank Volume every 1 second
+            Thread thread4 = new Thread(race.TankDecrease);
+            thread4.IsBackground = true;
+            thread4.Start();
 
             Console.ReadKey();
         }
