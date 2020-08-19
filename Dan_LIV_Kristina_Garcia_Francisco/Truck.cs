@@ -2,6 +2,9 @@
 
 namespace Dan_LIV_Kristina_Garcia_Francisco
 {
+    /// <summary>
+    /// Truck class that inherits from Motor Vehicle
+    /// </summary>
     class Truck : MotorVehicle
     {
         #region Property
@@ -14,16 +17,25 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         {
         }
 
+        /// <summary>
+        /// Method used to load a truck
+        /// </summary>
         public void Load()
         {
             Console.WriteLine("Fill up the truck");
         }
 
+        /// <summary>
+        /// Method used to unload a truck
+        /// </summary>
         public void Unload()
         {
             Console.WriteLine("Remove items from the truck");
         }
 
+        /// <summary>
+        /// Creates a specific truck
+        /// </summary>
         public override void Create()
         {
             Truck truck = new Truck

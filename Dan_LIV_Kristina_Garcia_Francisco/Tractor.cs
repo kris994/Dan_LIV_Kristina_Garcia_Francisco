@@ -2,6 +2,9 @@
 
 namespace Dan_LIV_Kristina_Garcia_Francisco
 {
+    /// <summary>
+    /// Tractor class that inherits from Motor Vehicle
+    /// </summary>
     class Tractor : MotorVehicle
     {
         #region Property
@@ -10,12 +13,20 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         public string Drive { get; set; }
         #endregion
 
+        #region Local Variables
+        /// <summary>
+        /// Array of drives
+        /// </summary>
         private readonly string[] allDrive = { "A", "B", "C" };
+        #endregion
 
         public Tractor() : base()
         {
         }
 
+        /// <summary>
+        /// Creates a specific tractor
+        /// </summary>
         public override void Create()
         {
             Tractor tractor = new Tractor

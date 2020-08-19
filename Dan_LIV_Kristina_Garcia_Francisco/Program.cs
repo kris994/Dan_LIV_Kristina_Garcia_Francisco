@@ -5,13 +5,22 @@ using System.Threading;
 
 namespace Dan_LIV_Kristina_Garcia_Francisco
 {
+    /// <summary>
+    /// Main Program class
+    /// </summary>
     class Program
     {
+        #region Local Variables
         public static List<Automobile> allAutomobiles = new List<Automobile>();
         public static List<Truck> allTruck = new List<Truck>();
         public static List<Tractor> allTractor = new List<Tractor>();
         public static bool containsRedCar = false;
+        #endregion
 
+        /// <summary>
+        /// The main Method
+        /// </summary>
+        /// <param name="args">Main arguments</param>
         static void Main(string[] args)
         {
             Automobile auto = new Automobile();
@@ -54,7 +63,7 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             Automobile golf = new Automobile
             {
                 Color = "Orange",
-                TankVolume = 40,
+                TankVolume = 45,
                 Producer = "Golf"
             };
             allAutomobiles.Add(golf);
