@@ -32,7 +32,7 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             Console.WriteLine("Turn on the motor and start going.");
         }
 
-        public virtual void Stop()
+        public virtual void Stop(object obj)
         {
             Console.WriteLine("Turn off the motor.");
         }

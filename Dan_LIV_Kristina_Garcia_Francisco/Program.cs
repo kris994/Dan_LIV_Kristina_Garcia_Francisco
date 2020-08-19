@@ -13,6 +13,7 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         public static List<Automobile> allAutomobiles = new List<Automobile>();
         public static List<Truck> allTruck = new List<Truck>();
         public static List<Tractor> allTractor = new List<Tractor>();
+        public static bool containsRedCar = false;
 
         static void Main(string[] args)
         {
@@ -49,12 +50,14 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
                 thread1.Start();
             }
 
+            containsRedCar = Program.allAutomobiles.Any(car => car.Color == "Red");
+
             // Creating golf car
             Random rng = new Random();
             Automobile golf = new Automobile
             {
                 Color = "Orange",
-                TankVolume = rng.Next(50, 101),
+                TankVolume = 40,
                 Producer = "Golf"
             };
             allAutomobiles.Add(golf);

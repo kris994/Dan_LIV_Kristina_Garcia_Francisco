@@ -35,23 +35,29 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
                 Category = allCategory[rng.Next(0, allCategory.Length)],
                 MotorType = allMotorType[rng.Next(0, allMotorType.Length)],
                 Color = allColors[rng.Next(0, allColors.Length)],
-                MotorNumber = rng.Next(50, 101),
+                MotorNumber = rng.Next(30, 101),
                 RegistrationNumber = rng.Next(1000, 10000).ToString(),
                 DoorNumber = rng.Next(2, 6),
-                TankVolume = rng.Next(50, 101),
+                TankVolume = 40,
                 TransportType = allTransportType[rng.Next(0, allTransportType.Length)],
                 Producer = allProducer[rng.Next(0, allProducer.Length)],
                 TrafficNumber = rng.Next(1000, 10000)
             };
 
-            Raceing.ready.AddCount();
+            Raceing.raceCDE.AddCount();
             Program.allAutomobiles.Add(auto);
         }
 
         public override void Move(object obj)
         {
             Automobile auto = (Automobile)obj;
-            Console.WriteLine(auto.Color + " " + auto.Producer + " started the moving.");
+            Console.WriteLine(auto.Color + " " + auto.Producer + " started moving.");
+        }
+
+        public override void Stop(object obj)
+        {
+            Automobile auto = (Automobile)obj;
+            Console.WriteLine(auto.Color + " " + auto.Producer + " turned off the motor.");
         }
     }
 }
