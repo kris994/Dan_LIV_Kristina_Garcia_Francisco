@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Dan_LIV_Kristina_Garcia_Francisco
 {
@@ -68,13 +65,17 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             thread2.Start();
 
             // Thread that changes the semaphore color every 2 seconds
-            Thread thread3 = new Thread(race.ChangeSemaphoreColor);
-            thread3.IsBackground = true;
+            Thread thread3 = new Thread(race.ChangeSemaphoreColor)
+            {
+                IsBackground = true
+            };
             thread3.Start();
 
             // Thread that reduces the Tank Volume every 1 second
-            Thread thread4 = new Thread(race.TankDecrease);
-            thread4.IsBackground = true;
+            Thread thread4 = new Thread(race.TankDecrease)
+            {
+                IsBackground = true
+            };
             thread4.Start();
 
             Console.ReadKey();
