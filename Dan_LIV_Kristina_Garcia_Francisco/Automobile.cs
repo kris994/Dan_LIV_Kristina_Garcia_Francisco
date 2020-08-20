@@ -74,7 +74,7 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         public override void Move(object obj)
         {
             Automobile auto = (Automobile)obj;
-            Console.WriteLine(auto.Color + " " + auto.Producer + " started moving.");
+            Console.WriteLine(auto.Color + " " + auto.Producer + " turned on the motor and started moving.");
         }
 
         /// <summary>

@@ -22,10 +22,6 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         /// </summary>
         private EventWaitHandle winner = new AutoResetEvent(true);
         /// <summary>
-        /// Write top red car result if it exists after the rank text
-        /// </summary>
-        private EventWaitHandle infoText = new AutoResetEvent(false);
-        /// <summary>
         /// Create random values
         /// </summary>
         private static readonly Random rng = new Random();
@@ -72,7 +68,8 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             while (auto.TankVolume > 0)
             {
                 // Driving towards the semaphore
-                Thread.Sleep(10000);
+                DrivingWithoutStop(10, auto);
+
                 Console.WriteLine("{0} {1} reached the semaphore, currently the light is {2}", auto.Color, auto.Producer, semaphoreColor);
                 while (semaphoreColor == "Red")
                 {
@@ -83,10 +80,10 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
                 Interlocked.Increment(ref carCounter);
 
                 // Driving towards the gas station
-                Thread.Sleep(3000);
+                DrivingWithoutStop(3, auto);
+
                 if (auto.TankVolume < 15)
                 {
-                    auto.Stop(auto);
                     ChargingAtGasStation(auto);
                 }
                 else
@@ -95,7 +92,8 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
                 }
 
                 // Driving to the finish line
-                Thread.Sleep(7000);              
+                DrivingWithoutStop(7, auto);
+
                 break;
             }
 
@@ -103,7 +101,7 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             if (auto.TankVolume <= 0)
             {
                 auto.Stop(auto);
-                Console.WriteLine("{0} {1} is out of gas and left the race.", auto.Color, auto.Producer);
+                Console.WriteLine("\t\t\t\t\t\t\t\t{0} {1} is out of gas and left the race.", auto.Color, auto.Producer);
             }
             else if (auto.TankVolume > 0)
             {
@@ -115,6 +113,23 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
 
             winner.WaitOne();
             FinalResult(auto);
+        }
+
+        /// <summary>
+        /// Car is driving towards an objective without stop
+        /// </summary>
+        /// <param name="time">Given time until an objective appears</param>
+        /// <param name="auto">The car that is driving</param>
+        public void DrivingWithoutStop(int time, Automobile auto)
+        {
+            for (int i = 0; i < time; i++)
+            {
+                Thread.Sleep(1000);
+                if (auto.TankVolume <= 0)
+                {
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -138,10 +153,21 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         /// </summary>
         public void ChangeSemaphoreColor()
         {
-            Console.WriteLine("\t\t\t\t\tSemaphore is now active.");
+            Console.WriteLine("\t\t\t\t\t\t\t\tSemaphore is now active.");
             for (int i = 0; i < 3; i++)
             {
+                // Resets the for loop
+                if (i == 2)
+                {
+                    i = 0;
+                }
+
+                // First write it down, than change it
+                Console.WriteLine("\t\t\t\t\t\t\t\t{0} light.", colorOptions[i]);
+                semaphoreColor = colorOptions[i];
+
                 // Checks if all cars passed the semaphore before stopping to work
+                Thread.Sleep(100);
                 if (carCounter == 3)
                 {
                     Console.WriteLine("All cars passed the semaphore.");
@@ -149,15 +175,8 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
                     break;
                 }
 
-                // Resets the for loop
-                if (i == 2)
-                {
-                    i = 0;
-                }
-
-                semaphoreColor = colorOptions[i];
-                Console.WriteLine("\t\t\t\t\t{0} light.", semaphoreColor);
-                Thread.Sleep(2000);
+                // Left time the semaphore works before changing color
+                Thread.Sleep(1900);
             }
         }
 
@@ -167,7 +186,9 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         public void ChargingAtGasStation(Automobile auto)
         {
             gasStationQueue.Wait();
-            Console.WriteLine("{0} {1} is charging their tank", auto.Color, auto.Producer);
+            Console.WriteLine("{0} {1} is charging their tank, current tank: {2}l", auto.Color, auto.Producer, auto.TankVolume);
+            // Time it takes to charge it
+            Thread.Sleep(100);
             auto.TankVolume = 45;
             Console.WriteLine("{0} {1} finished charging their tank", auto.Color, auto.Producer);
             gasStationQueue.Release();
@@ -192,11 +213,11 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             if (winCarCounter == 1 && auto.TankVolume > 0)
             {
 
-                Console.WriteLine("\n\t\t\t\t\tRanking board:\n\t\t\t\t\t{0}. {1} {2}", winCarCounter, auto.Color, auto.Producer);
+                Console.WriteLine("\t\t\t\t\t\t\t\tRanking board:\n\t\t\t\t\t\t\t\t{0}. {1} {2}", winCarCounter, auto.Color, auto.Producer);
             }
             else if (auto.TankVolume > 0)
             {
-                Console.WriteLine("\t\t\t\t\t{0}. {1} {2}", winCarCounter, auto.Color, auto.Producer);
+                Console.WriteLine("\t\t\t\t\t\t\t\t{0}. {1} {2}", winCarCounter, auto.Color, auto.Producer);
             }
 
             // Print top red car board
@@ -207,16 +228,18 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
             }
             else if (carCounter == 3 && Program.containsRedCar == false)
             {
-                Console.WriteLine("\nThere were no red cars in the race.");
-            }
-         
-            // Stop the backgroun porcess if all cars crossed the finish line
-            if (carCounter == 3)
-            {
-                infoText.Set();
+                Console.WriteLine("\n-----------------\nThere were no red cars in the race.\n-----------------");
                 raceOver = true;
             }
-
+            else if(carCounter == 3 && Program.containsRedCar == true && noOne == false)
+            {
+                Console.WriteLine("\n-----------------\nNo red cars crossed the finish line.\n-----------------");
+                raceOver = true;
+            }
+            else if (carCounter == 3)
+            {
+                raceOver = true;
+            }
             winner.Set();
         }
 
@@ -227,8 +250,7 @@ namespace Dan_LIV_Kristina_Garcia_Francisco
         public void FastestRedCar(Automobile auto)
         {
             winner.Set();
-            infoText.WaitOne();
-            Console.WriteLine("\nFastest red car is: {0} {1}.", auto.Color, auto.Producer);
+            Console.WriteLine("\n-----------------\nFastest red car is: {0} {1}.\n-----------------", auto.Color, auto.Producer);
         }
     }
 }
